@@ -1193,8 +1193,9 @@
 
 				.stage {
 					overflow: hidden;
-					height: 100vh;
-					max-height: 100vh;
+					height: 110svh;
+					min-height: 110svh;
+					max-height: 110svh;
 				}
 
 
@@ -1418,6 +1419,9 @@
 					left: 6vw;
 					grid-gap: 10px;
 					border-radius: 6px;
+					-webkit-overflow-scrolling: touch;
+					touch-action: pan-y;
+					overscroll-behavior-y: contain;
 				}
 
 				.drawing-gallery-container {
@@ -1468,6 +1472,9 @@
 					box-sizing: border-box;
 					overflow-y: auto;
 					overflow-x: hidden;
+					-webkit-overflow-scrolling: touch;
+					touch-action: pan-y;
+					overscroll-behavior-y: contain;
 					z-index: 11;
 					scrollbar-width: thin;
 				}
