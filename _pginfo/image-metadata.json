@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "assets": {
+    "image-muqziecf-l0ask4n39ro": {
+      "id": "image-muqziecf-l0ask4n39ro",
+      "source": "project:illustrations/portfolio_3.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:22002974f71b1e0c422f2928faae6e4debc486b52186385cc76ab0851a10e13d",
+      "available": true
+    },
+    "image-muqziukg-a2nmykkqlff": {
+      "id": "image-muqziukg-a2nmykkqlff",
+      "source": "project:illustrations/portfolio_2.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:8a1816583d773587a35199c1fc9d2ffa1ddf732fbdf69f20eae512c1bceb9377",
+      "available": true
+    },
+    "image-muqziy4o-nv60titnred": {
+      "id": "image-muqziy4o-nv60titnred",
+      "source": "project:illustrations/portfolio_1.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:ba08f03063015bdb1a712bdab11d3f285e1bbc34e607aa19e6878b43307d1470",
+      "available": true
+    },
+    "image-muqzj0xq-gp39ek50zyr": {
+      "id": "image-muqzj0xq-gp39ek50zyr",
+      "source": "project:illustrations/portfolio_7.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:928893eb72192a00657f2bdd49113d7dab22411961809acb271ebc81233209a7",
+      "available": true
+    },
+    "image-muqzj72m-0vlv8ojfuri": {
+      "id": "image-muqzj72m-0vlv8ojfuri",
+      "source": "project:Slots/portfolio.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:6e02fdad8fff87faefe66b47c943ce570549aae66a2467f6dc679fb0c8f1825d",
+      "available": true
+    },
+    "image-muqzk405-erwp8vvlior": {
+      "id": "image-muqzk405-erwp8vvlior",
+      "source": "project:Slots/commissions.png",
+      "remembered": {},
+      "suggestions": {},
+      "revision": "sha256:743a9df1b1166d6547018235a6e5537b52c366ce7004732a330aefae3f8bee46",
+      "available": true
+    }
+  },
+  "sources": {
+    "project:illustrations/portfolio_3.png": {
+      "asset": "image-muqziecf-l0ask4n39ro",
+      "kind": "original",
+      "cropToken": null
+    },
+    "project:illustrations/portfolio_2.png": {
+      "asset": "image-muqziukg-a2nmykkqlff",
+      "kind": "original",
+      "cropToken": null
+    },
+    "project:illustrations/portfolio_1.png": {
+      "asset": "image-muqziy4o-nv60titnred",
+      "kind": "original",
+      "cropToken": null
+    },
+    "project:illustrations/portfolio_7.png": {
+      "asset": "image-muqzj0xq-gp39ek50zyr",
+      "kind": "original",
+      "cropToken": null
+    },
+    "project:Slots/portfolio.png": {
+      "asset": "image-muqzj72m-0vlv8ojfuri",
+      "kind": "original",
+      "cropToken": null
+    },
+    "project:Slots/commissions.png": {
+      "asset": "image-muqzk405-erwp8vvlior",
+      "kind": "original",
+      "cropToken": null
+    }
+  }
+}

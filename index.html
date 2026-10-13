@@ -1,0 +1,2103 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Welcome!</title>
+		<style>
+			@font-face {
+				font-family: 'KHMenu';
+				src: url('KHMenu.otf') format('opentype');
+				font-weight: 400;
+				font-style: normal;
+			}
+			
+			html,
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				background: #000;
+				overflow: hidden;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+			}
+			html {
+				scrollbar-color: #620dff6b #2f354200;
+				scrollbar-width: thin;
+			}
+
+
+			.stage {
+				position: relative;
+				width: 100vw;
+				height: 100vh;
+				background: #000;
+				isolation: isolate;
+			}
+
+			.site-intro .stars.bg,
+			.site-intro .static-black-lines {
+				opacity: 0;
+				animation: introFadeIn 1.2s ease-out forwards;
+			}
+
+			.site-intro .checkered-bg {
+				opacity: 0;
+				animation: introFadeIn 1.2s ease-out forwards, checkerSlide 4s linear infinite;
+			}
+
+			.site-intro .png-border, .site-intro .png-border2 {
+				opacity: 0;
+				transform: scale(1.18);
+				transform-origin: center;
+				animation: introBorderZoom 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+			}
+			
+
+			.site-intro .load-icon {
+				opacity: 0;
+				transform: translateX(-520px);
+				animation: introLoadIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+			}
+
+			.site-intro .star-icon {
+				opacity: 0;
+				animation: introStarFade 0.8s ease-out 1.3s forwards, starRotate 2s linear infinite 1.3s;
+			}
+
+			.site-intro .intro-text, .site-intro .intro-text-sub {
+				opacity: 0;
+				animation: introTextReveal 0.8s ease-out 1.3s forwards;
+			}
+
+			video {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+				animation: videoIntro 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+				transform-origin: center center;
+			}
+
+			.stars.bg {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+				z-index: 0;
+			}
+
+			.checkered-bg {
+				position: absolute;
+				left: 0;
+				top: -243.2px;
+				display: block;
+				width: 4000px;
+				height: 2400px;
+				object-fit: cover;
+				pointer-events: none;
+				z-index: 0;
+				mix-blend-mode: plus-lighter;
+				animation: checkerSlide 3s linear infinite;
+				scale: 1.25;
+			}
+
+			.static-black-lines {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+				z-index: 1;
+				mix-blend-mode: overlay;
+			}
+
+			.png-border {
+				position: absolute;
+				left: 0;
+				top: -6vh;
+				width: 100vw;
+				height: auto;
+				z-index: 1;
+			}
+
+			.png-border2 {
+				position: absolute;
+				left: 0;
+				bottom: -6vh;
+				width: 100vw;
+				height: auto;
+				z-index: 1;
+			}
+
+			.hue-shift-image1, .hue-shift-image2 {
+				display: block;
+				width: 100%;
+				height: auto;
+				position: relative;
+				filter: hue-rotate(0deg);
+				animation: hueLoop 3s linear infinite;
+			}
+
+			.load-icon {
+				position: absolute;
+				top: 4.656vh;
+				left: 16.30vw;
+				width: 15vw;
+				height: auto;
+				z-index: 3;
+				aspect-ratio: auto;
+			}
+
+			.star-icon {
+				position: absolute;
+				top: 6vh;
+				left: 28.76vw;
+				width: 4.39vw;
+				height: auto;
+				z-index: 4;
+				transform-origin: center;
+				aspect-ratio: auto;
+				animation: starRotate 2s linear infinite;
+			}
+
+			.vertical-overlay {
+				position: absolute;
+				left: -2366.2px;
+				top: 12px;
+				display: block;
+				height: 100%;
+				max-height: calc(100vh - 44px);
+				width: auto;
+				animation: verticalSlide 3s linear infinite;
+				pointer-events: none;
+				z-index: 2;
+				mix-blend-mode: overlay;
+			}
+
+			.slot-ui {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 5;
+			}
+
+			.slot-plate {
+				position: absolute;
+				left: 50%;
+				top: 15.5vh;
+				width: 100vw;
+				height: auto;
+				transform: translateX(-50%) scale(0.65);
+				transform-origin: top center;
+				z-index: 1;
+			}
+
+			.slot-plate-image {
+				display: block;
+				width: 100vw;
+				height: auto;
+				opacity: 0.75;
+				aspect-ratio: auto;
+			}
+
+			.slot-buttons {
+				position: absolute;
+				left: 48%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				gap: 0;
+				align-items: center;
+				justify-content: center;
+				z-index: 2;
+				pointer-events: none;
+			}
+
+			.slot-button {
+				all: unset;
+				display: block;
+				width: 180%;
+				margin: 0.16vw;
+				cursor: pointer;
+				position: relative;
+				transition: transform 0.18s ease, filter 0.18s ease;
+				pointer-events: auto;
+			}
+
+			.slot-button-mobile {
+				all: unset;
+				display: none;
+				width: 180%;
+				margin: 0.16vw;
+				cursor: pointer;
+				position: relative;
+				transition: transform 0.18s ease, filter 0.18s ease;
+				pointer-events: auto;
+			}
+
+			.slot-button::before {
+				content: "";
+				position: absolute;
+				inset: -0.16vw -0.36vw -0.36vw -0.36vw;
+				border: 0.26vw solid rgba(255, 60, 60, 0);
+				border-radius: 3.23vw;
+				pointer-events: none;
+				z-index: 2;
+				transition: border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+			}
+
+			.slot-button-mobile::before {
+				content: "";
+				position: absolute;
+				inset: -0.16vw -0.36vw -0.36vw -0.36vw;
+				border: 0.26vw solid rgba(255, 60, 60, 0);
+				border-radius: 3.23vw;
+				pointer-events: none;
+				z-index: 2;
+				transition: border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+			}
+
+			.slot-button img,
+			.slot-button-mobile img {
+				display: block;
+				width: 100%;
+				height: auto;
+				object-fit: contain;
+				filter: drop-shadow(0 0.52vw 1.04vw rgba(0, 0, 0, 0.5));
+				position: relative;
+				z-index: 1;
+			}
+
+			.slot-button:hover::before,
+			.slot-button:focus-visible::before,
+			.slot-button-mobile:hover::before,
+			.slot-button-mobile:focus-visible::before {
+				border-color: rgba(255, 29, 29, 0.95);
+				box-shadow: 0 0 0 0.21vw rgba(185, 0, 0, 0.28), 0 0 0.94vw rgba(255, 70, 70, 0.75);
+				animation: redPulse 0.9s ease-in-out infinite alternate;
+			}
+
+			.slot-button:hover,
+			.slot-button:focus-visible,
+			.slot-button-mobile:hover,
+			.slot-button-mobile:focus-visible {
+				transform: translateY(-0.37vh) scale(1.02);
+				filter: brightness(1.08) drop-shadow(0 0.63vw 1.15vw rgba(0, 0, 0, 0.45));
+			}
+
+			@keyframes redPulse {
+				0% {
+					box-shadow: 0 0 0 0.1vw rgba(185, 0, 0, 0.28), 0 0 0.42vw rgba(255, 60, 60, 0.35);
+					border-color: rgba(255, 29, 29, 0.95);
+				}
+
+				100% {
+					box-shadow: 0 0 0 0.36vw rgba(185, 0, 0, 0.22), 0 0 0.94vw rgba(255, 60, 60, 0.8);
+					border-color: rgba(255, 29, 29, 0.95);
+				}
+			}
+
+			.site-intro .slot-plate {
+				opacity: 1;
+			}
+
+			.site-intro .slot-plate-image {
+				opacity: 0;
+				transform: scale(1.12);
+				animation: introPlateReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+			}
+
+			.site-intro .slot-button {
+				opacity: 0;
+				transform: translateY(1.67vh) scale(0.98);
+				animation: introSlotReveal 0.43s ease-out forwards;
+			}
+
+			.site-intro .slot-button-mobile {
+				opacity: 0;
+				transform: translateY(1.67vh) scale(0.98);
+				animation: introSlotReveal 0.43s ease-out forwards;
+			}
+
+			.site-intro .slot-button:nth-child(1) { animation-delay: 1.3s; }
+			.site-intro .slot-button:nth-child(2) { animation-delay: 1.5s; }
+			.site-intro .slot-button:nth-child(3) { animation-delay: 1.7s; }
+			.site-intro .slot-button:nth-child(4) { animation-delay: 1.9s; }
+			.site-intro .slot-button-mobile:nth-child(5) { animation-delay: 1.3s; }
+			.site-intro .slot-button-mobile:nth-child(6) { animation-delay: 1.5s; }
+			.site-intro .slot-button-mobile:nth-child(7) { animation-delay: 1.7s; }
+			.site-intro .slot-button-mobile:nth-child(8) { animation-delay: 1.9s; }
+
+			@keyframes introPlateReveal {
+				0% {
+					opacity: 0;
+					transform: scale(1.12);
+				}
+
+				100% {
+					opacity: 0.75;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes introPlateRevealMobile {
+				0% {
+					opacity: 0;
+					
+				}
+
+				100% {
+					opacity: 1;
+					
+				}
+			}
+
+			@keyframes introScrollBarReveal {
+				0% {
+					opacity: 0;
+					transform: scale(1.12);
+				}
+
+				100% {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes introSlotReveal {
+				0% {
+					opacity: 0;
+					transform: translateY(1.67vh) scale(0.98);
+				}
+
+				100% {
+					opacity: 1;
+					transform: translateY(0) scale(1);
+				}
+			}
+
+			.scrollbar {
+				position: absolute;
+				left: 95.6%;
+				top: 3.4%;
+				width: 2.78%;
+				height: auto;
+				object-fit: cover;
+				display: block;
+				z-index: 1;
+				opacity: 1;
+			}
+
+			.disc-wrap {
+				position: absolute;
+				right: -4vw;
+				bottom: -4vw;
+				display: flex;
+				align-items: center;
+				gap: 0.8vw;
+				z-index: 7;
+				opacity: 0;
+				transform: translateX(6.25vw);
+				pointer-events: auto;
+				mix-blend-mode: plus-lighter;
+			}
+
+			.disc-now-playing {
+				margin: 0;
+				max-width: 22vw;
+				color: rgba(255, 255, 255, 0.92);
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(1.6vh, 1.15vw, 2.4vh);
+				line-height: 1.1;
+				letter-spacing: 0.03em;
+				text-align: right;
+				text-shadow: 0 0 0.42vw rgba(255, 255, 255, 0.4), 0 0.19vh 0.42vw rgba(0, 0, 0, 0.7);
+				opacity: 0;
+				transform: translate(0.52vw, 0.56vh);
+				transition: opacity 0.45s ease, transform 0.45s ease;
+				user-select: none;
+				mix-blend-mode: plus-lighter;
+			}
+
+			.disc-now-playing.is-visible {
+				opacity: 1;
+				transform: translate(0, 0.56vh);
+			}
+
+			.disc-icon {
+				width: 13vw;
+				height: auto;
+				display: block;
+				filter: drop-shadow(0 0 0.63vw rgba(255, 255, 255, 0.18));
+				transform-origin: center;
+				animation: discSpin 1.8s linear infinite;
+				mix-blend-mode: plus-lighter;
+			}
+
+			.disc-icon.is-paused {
+				animation-play-state: paused;
+			}
+
+			@keyframes discSpin {
+				from {
+					transform: rotate(0deg);
+				}
+
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			.site-intro .disc-wrap {
+				animation: introDiscReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+			}
+
+			.site-intro .scrollbar {
+				opacity: 0;
+				transform: scale(1.12);
+				animation: introScrollBarReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+			}
+
+			@keyframes introDiscReveal {
+				0% {
+					opacity: 0;
+					transform: translateX(6.25vw);
+				}
+
+				100% {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+
+			@keyframes videoIntro {
+				0% {
+					opacity: 0;
+					transform: scale(1.20);
+				}
+
+				100% {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes hueLoop {
+				0% {
+					filter: hue-rotate(0deg) saturate(1);
+				}
+
+				50% {
+					filter: hue-rotate(30deg) saturate(1);
+				}
+
+				100% {
+					filter: hue-rotate(0deg) saturate(1);
+				}
+			}
+
+			@keyframes verticalSlide {
+				0% {
+					transform: translateX(0);
+				}
+
+				100% {
+					transform: translateX(4698.3px);
+				}
+			}
+
+			@keyframes checkerSlide {
+				0% {
+					transform: translate(0, 0);
+				}
+
+				100% {
+					transform: translate(-199.5px, 199.5px);
+				}
+			}
+
+			@keyframes starRotate {
+				from {
+					transform: rotate(0deg);
+				}
+
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			@keyframes introFadeIn {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+
+			@keyframes introBorderZoom {
+				from {
+					opacity: 0;
+					transform: scale(1.18);
+				}
+
+				to {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes introLoadIn {
+				from {
+					opacity: 0;
+					transform: translateX(-520px);
+				}
+
+				to {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+
+			@keyframes introStarFade {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+
+			@keyframes introTextReveal {
+				0% {
+					opacity: 0;
+				}
+
+				100% {
+					opacity: 1;
+				}
+			}
+
+			@keyframes portfolioReveal {
+				0% {
+					opacity: 0;
+				}
+
+				100% {
+					opacity: 1;
+				}
+			}
+
+			@keyframes portfolioFadeOut {
+				from {
+					opacity: 1;
+				}
+
+				to {
+					opacity: 0;
+				}
+			}
+
+			
+
+			@media (prefers-reduced-motion: reduce) {
+				video {
+					animation: none;
+					opacity: 1;
+					transform: none;
+				}
+
+				.hue-shift-image1 {
+					animation: none;
+					filter: hue-rotate(0deg);
+				}
+
+				.site-intro .stars.bg,
+				.site-intro .checkered-bg,
+				.site-intro .static-black-lines,
+				.site-intro .png-border,
+				.site-intro .load-icon,
+				.site-intro .star-icon{
+					animation: none;
+					opacity: 1;
+					transform: none;
+				}
+			}
+
+			.intro-text-bg {
+				background: rgba(0, 0, 0, 1);
+				border-radius: 10px;
+				z-index: 6;
+			}
+
+			.intro-text {
+				position: absolute;
+				right: 25vw;
+				bottom: 6vh;
+	
+				width: min(40vw, 72vw);
+				text-align: left;
+				color: #fff;
+				font-size: clamp(2.4vh, 2vw, 3.9vh);
+				font-weight: auto;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				line-height: 1.4;
+				letter-spacing: 0.02em;
+				text-shadow: 0 0 14px rgba(255, 255, 255, 0.45), 0 3px 8px rgba(0, 0, 0, 0.75);
+				z-index: 6;
+				white-space: normal;
+				opacity: 0;
+			}
+
+			.portfolio-modal-container.show, .aboutme-modal-container.show, .social-media-modal-container.show {
+				animation: portfolioReveal 0.5s ease-in-out forwards;
+				pointer-events: auto;
+				opacity: 1;
+			}
+
+			.drawing-gallery-container.show,
+			.animations-gallery-container.show,
+			.music-gallery-container.show {
+				animation: portfolioReveal 0.5s ease-in-out forwards;
+				pointer-events: inherit;
+				opacity: 1;
+			}
+
+
+			.portfolio-modal-container {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background: rgba(0, 0, 0, 0.8);
+				z-index: 9;
+				opacity: 0;
+				pointer-events: none;
+
+			}
+
+				.aboutme-modal-container {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background: rgba(0, 0, 0, 0.8);
+				z-index: 9;
+				opacity: 0;
+				pointer-events: none;
+
+			}
+
+			.social-media-modal-container {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background: rgba(0, 0, 0, 0.8);
+				z-index: 9;
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			.portfolio-modal-container.is-closing, .aboutme-modal-container.is-closing, .social-media-modal-container.is-closing {
+				animation: portfolioFadeOut 0.5s ease-in-out forwards;
+				pointer-events: none;
+			}
+
+			.portfolio-tools-text {
+				position: absolute;
+				top: 11%;
+				left: 3%;
+				width: min(24vw, 500px);
+				margin: 0;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(1rem, 1.5vw, 1.6rem);
+				line-height: 1.3;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				z-index: 10;
+			}
+
+			.portfolio-tools-text-mobile {
+				display: none;
+			}
+
+			.illustrations-button {
+				position: static;
+				flex: 1 1 0;
+				min-width: 0;
+				height: 4vh;
+				z-index: 10;
+				color: #fff;
+				cursor: pointer;
+				border: 3px solid transparent;
+				border-radius: 999px;
+				background: none;
+				font-size: 20px;
+				font-weight: 700;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				letter-spacing: 0.03em;
+				box-sizing: border-box;
+			}
+
+			.animations-button {
+				position: static;
+				flex: 1 1 0;
+				min-width: 0;
+				height: 4vh;
+				z-index: 10;
+				color: #fff;
+				cursor: pointer;
+				border: 3px solid transparent;
+				border-radius: 999px;
+				background: none;
+				font-size: 20px;
+				font-weight: 700;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				letter-spacing: 0.03em;
+				box-sizing: border-box;
+			}
+			
+			.music-button {
+				position: static;
+				flex: 1 1 0;
+				min-width: 0;
+				height: 4vh;
+				z-index: 10;
+				color: #fff;
+				cursor: pointer;
+				border: 3px solid transparent;
+				border-radius: 999px;
+				background: none;
+				font-size: 20px;
+				font-weight: 700;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				letter-spacing: 0.03em;
+				box-sizing: border-box;
+			}
+
+			.portfolio-category-buttons {
+				position: absolute;
+				top: 3.5%;
+				left: 50%;
+				transform: translateX(-50%);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: clamp(8px, 1.5vw, 24px);
+				width: min(54vw, 700px);
+				z-index: 10;
+			}
+				
+			.portfolio-modal-close-button, .aboutme-modal-close-button, .social-media-modal-close-button {
+				position: absolute;
+				top: clamp(12px, 3.5vh, 32px);
+				right: clamp(12px, 2vw, 24px);
+				width: clamp(32px, 3vw, 48px);
+				height: clamp(32px, 3vw, 48px);
+				padding: 0;
+				display: grid;
+				place-items: center;
+				z-index: 12;
+				color: #fff;
+				cursor: pointer;
+				border: 3px solid transparent;
+				border-radius: 999px;
+				background: none;
+				font-size: 20px;
+				font-weight: 700;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				letter-spacing: 0.03em;
+			}
+
+			.portfolio-modal-close-button img, .aboutme-modal-close-button img, .social-media-modal-close-button img {
+				display: block;
+				position: static;
+				width: 100%;
+				height: auto;
+			}
+
+			.drawing-gallery-container {
+				position: sticky;
+				margin: auto;
+				background: none;
+				width: 68%;
+				height: 90%;
+				top: 50%;
+				left: 30%;
+				display: grid;
+				
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: 20px;
+				overflow-y: auto;
+      			overflow-x: hidden;
+				border-radius: 10px;
+				z-index: 10;
+				opacity: 0;
+			}
+
+			.drawing-gallery-item {
+				display: flex;
+                flex-direction: row;
+				justify-content: space-between;
+				flex-basis: 32%;
+				margin: 0px;
+			}
+
+			.drawing-gallery-item img{
+				width: 100%;
+				height: auto;
+				object-fit: cover;
+				border-radius: 10px;
+				cursor: pointer;
+				transition: filter 0.2s ease, transform 0.2s ease;
+			}
+
+			.drawing-gallery-item img:hover,
+			.drawing-gallery-item img:focus-visible {
+				filter: brightness(1.15);
+				transform: scale(1.02);
+			}
+
+			.illustration-lightbox {
+				position: fixed;
+				inset: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 6vh 8vw;
+				background: rgba(0, 0, 0, 0.9);
+				z-index: 20;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.25s ease;
+			}
+
+			.illustration-lightbox.show {
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			.illustration-lightbox-image {
+				max-width: 80vw;
+				max-height: 88vh;
+				width: auto;
+				height: auto;
+				object-fit: contain;
+				border-radius: 10px;
+				box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.65);
+			}
+
+			.illustration-lightbox-close,
+			.illustration-lightbox-arrow {
+				position: absolute;
+				border: 0;
+				color: #fff;
+				background: rgba(0, 0, 0, 0.55);
+				cursor: pointer;
+				font: 700 2rem Arial, sans-serif;
+				line-height: 1;
+				padding: 0.65rem 0.9rem;
+			}
+
+			.illustration-lightbox-close {
+				top: 2vh;
+				right: 2vw;
+			}
+
+			.illustration-lightbox-arrow {
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			.illustration-lightbox-previous {
+				left: 2vw;
+			}
+
+			.illustration-lightbox-next {
+				right: 2vw;
+			}
+
+			.animations-gallery-container, .music-gallery-container {
+				position: absolute;
+				margin: auto;
+				background: none;
+				width: 68%;
+				height: 90%;
+				top: 10%;
+				left: 30%;
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: clamp(16px, 3vw, 100px);
+				overflow-y: auto;
+      			overflow-x: hidden;
+				border-radius: 10px;
+				z-index: 10;
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			.animations-gallery-item, .music-gallery-item {
+				display: flex;
+				min-width: 0;
+				flex-direction: column;
+				justify-content: flex-start;
+				margin: 0px;
+				width: 100%;
+				height: auto;
+			}
+
+			.animations-gallery-item iframe, .music-gallery-item iframe {
+				display: block;
+				width: 100%;
+				height: auto;
+				aspect-ratio: 16 / 9;
+				border-radius: 10px;
+			}
+
+			.illustrations-button.is-selected,
+			.animations-button.is-selected,
+			.music-button.is-selected {
+				border-color: rgb(0, 10, 153);
+			}
+
+			.mute-button {
+				position: absolute;
+				top: 20px;
+				left: 20px;
+				z-index: 50;
+				border: none;
+				border-radius: 999px;
+				background: #fff;
+				color: #000;
+				padding: 12px 18px;
+				font-size: 14px;
+				font-weight: 700;
+				cursor: pointer;
+				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+			}
+
+			.mute-button:hover {
+				transform: translateY(-1px);
+			}
+
+			.mute-button:active {
+				transform: translateY(0);
+			}
+
+			.aboutme-modal-plate {
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 50%;
+				width: 80%;
+				height: 80%;
+				background-color: rgba(0, 20, 120, 0.67);
+				z-index: 10;
+				border-radius: 50px;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+			}
+
+			.aboutme-modal {
+				position: absolute;
+				inset: 0;
+			}
+
+			.aboutme-modal-icon {
+				position: absolute;
+				width: 200px;
+				height: auto;
+				top: 15%;
+				left: 15%;
+				z-index: 11;
+				border-radius: 999%;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+			}
+
+			.aboutme-modal-icon img {
+				display: block;
+				width: 100%;
+				height: auto;
+				border-radius: 999%;
+				border: 6px solid #fff;
+			}
+			.aboutme-modal-text {
+				position: absolute;
+				top: 38%;
+				left: 15%;
+				width: 70%;
+				z-index: 11;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(0.75rem, 2.7vw, 1rem);
+				line-height: 1.2;
+				text-align: left;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				letter-spacing: 0.9px;
+				font-weight: normal;
+			}
+
+			.social-media-buttons {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				display: grid;
+				grid-template-columns: repeat(4, minmax(120px, 1fr));
+				gap: clamp(16px, 3vw, 48px);
+				width: min(82vw, 900px);
+				z-index: 11;
+			}
+
+			.social-media-button {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 12px;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(1rem, 1.8vw, 1.5rem);
+				text-align: center;
+				text-decoration: none;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				transition: transform 0.18s ease, filter 0.18s ease;
+			}
+
+			.social-media-button:hover,
+			.social-media-button:focus-visible {
+				transform: translateY(-6px) scale(1.04);
+				filter: brightness(1.2);
+			}
+			
+			.social-media-modal-plate {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: 60%;
+				height: 50%;
+				background-color: rgba(0, 20, 120, 0.67);
+				z-index: 10;
+				border-radius: 50px;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+			}
+			.social-media-buttons img {
+				display: block;
+				width: 80%;
+				height: auto;
+				border-color: #fff;
+				border-radius: 999%;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+			}
+			.aboutme-modal-text2 {
+				position: absolute;
+				top: 79%;
+				transform: translate(-50%, -50%);
+				left: 50%;
+				width: 70%;
+				height: auto;
+				z-index: 11;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(0.75rem, 2.7vw, 1.5rem);
+				line-height: normal;
+				text-align: left;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				letter-spacing: 0.9px;
+				font-weight: normal;
+			}
+
+			.aboutme-modal-text3 {
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 67%;
+				width: 40%;
+				height: auto;
+				z-index: 11;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(0.75rem, 2.7vw, 1.3rem);
+				line-height: 1.2;
+				text-align: left;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				letter-spacing: 0.9px;
+				font-weight: normal;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+
+			.middlebar {
+				position: absolute;
+				top: 50%;
+				left: 45%;
+				transform: translate(-50%, -50%);
+				height: 60%;
+				width: 3px;
+				background-color: #fff;
+				z-index: 11;
+				border-radius: 999px;
+			}
+
+			.intro-text-sub {
+				position: absolute;
+				top: 97%;
+				transform: translate(-50%, -50%);
+				left: 36%;
+				width: 70%;
+				height: auto;
+				z-index: 11;
+				color: #fff;
+				font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+				font-size: clamp(0.75rem, 2.7vw, 1rem);
+				line-height: normal;
+				text-align: left;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+				letter-spacing: 0.9px;
+				font-weight: normal;
+				text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+			}
+
+
+
+			@media (max-width: 720px) {
+				html,
+				body {
+					height: 100%;
+					overflow: hidden;
+				}
+
+				.stage,
+				.slot-ui,
+				.portfolio-modal-container {
+					width: 100%;
+					min-width: 0;
+				}
+
+
+
+				.vertical-overlay {
+					left: -1100px;
+					max-height: 100%;
+				}
+
+				.png-border {
+					top: -2vh;
+					left: -55%;
+					width: 100px;
+					height: 15vh;
+				}
+
+				.png-border2 {
+					display: none;
+				}
+
+				.png-border-mobile {
+					position: absolute;
+					top: 0%;
+					left: 50%;
+					width: 100%;
+					height: 150px;
+					transform: translate(-50%, -50%);
+					background: #140771;
+					background: linear-gradient(0deg,rgba(20, 7, 113, 1) 0%, rgba(0, 0, 0, 1) 58%);
+					border: 4px solid #5f2aff;
+					z-index: 1;
+				}
+
+				.png-border-mobile2 {
+					position: absolute;
+					bottom: -10%;
+					left: 50%;
+					width: 100%;
+					height: 120px;
+					transform: translate(-50%, -50%);
+					background: #140771;
+					background: linear-gradient(0deg,rgba(0, 0, 0, 1) 0%, rgba(20, 7, 113, 1) 58%);
+					border: 4px solid #5f2aff;
+					z-index: 1;
+				}
+
+				.load-icon {
+					top: 5vh;
+					left: 8vw;
+					width: 28vw;
+					z-index: 2;
+				}
+
+				.star-icon {
+					top: 5.5vh;
+					left: 30.5vw;
+					width: 9vw;
+				}
+
+				.slot-plate {
+					top: 48%;
+					width: 145vw;
+					transform: translate(-50%, -50%) scale(0.72);
+				}
+				.slot-plate-image {
+					display: none;
+				}
+
+				.slot-background {
+					position: absolute;
+					top: 49%;
+					left: 50%;
+					width: 450px;
+					height: 75%;
+					transform: translate(-50%, -50%);
+					background: rgba(0, 14, 87, 0.77);
+					border-radius: 30px;
+					box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+					z-index: 1;
+				}
+
+				.site-intro .slot-background{
+					position: absolute;
+					opacity: 0;
+					animation: introPlateRevealMobile 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+				}
+
+				.slot-buttons {
+					left: 50%;
+					top: -50%;
+					width: 340px;
+					transform: translate(-50%, -50%);
+					
+				}
+
+				.slot-button {
+					display: none;
+					width: 100%;
+					margin: 0.8vw 0;
+				}
+
+				.slot-button-mobile {
+					display: block;
+					width: 170%;
+					margin: 0.8vw 0;
+					
+				}
+
+				.scrollbar {
+					display: none;
+				}
+
+				.intro-text {
+					position: absolute;
+					bottom: 2%;
+					left: 39%;
+					transform: translate(-50%, -50%);
+					width: 70vw;
+					font-size: clamp(1rem, 3.7vw, 1.35rem);
+					line-height: 1.2;
+					text-align: left;
+				}
+				.intro-text-sub {
+					position: absolute;
+					top: 2%;
+					left: 63%;
+					transform: translate(-50%, -50%);
+					width: 70vw;
+					font-size: clamp(0.75rem, 2.7vw, 0.4rem);
+					line-height: 1.2;
+					text-align: right;
+					text-shadow: 0 0px 6px rgba(255, 255, 255, 0.9);
+				}
+
+				.disc-wrap {
+					right: -7vw;
+					bottom: -7vw;
+					gap: 1vw;
+				}
+
+				.disc-icon {
+					width: 25vw;
+				}
+
+				.disc-now-playing {
+					max-width: 35vw;
+					font-size: clamp(0.75rem, 2.7vw, 1rem);
+					color: #7925ffad;
+				}
+
+				.portfolio-modal-image {
+					top: 9vh;
+					left: 5vw;
+					width: 22vw;
+				}
+
+				.portfolio-tools-text {
+					display: none;
+				}
+
+				.portfolio-tools-text-mobile {
+					display: block;
+					position: absolute;
+					top: 13vh;
+					left: 4vw;
+					width: 92vw;
+					margin: 0;
+					color: #fff;
+					font-family: 'KHMenu', Arial, Helvetica, sans-serif;
+					font-size: clamp(0.65rem, 2.7vw, 0.9rem);
+					line-height: 1.2;
+					text-align: center;
+					text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+					z-index: 10;
+				}
+
+				.illustrations-button,
+				.animations-button,
+				.music-button {
+					width: auto;
+					height: auto;
+					flex: 1 1 0;
+					padding: 0.55rem 0.65rem;
+					font-size: clamp(0.75rem, 3.1vw, 1rem);
+				}
+
+				.portfolio-category-buttons {
+					top: 4vh;
+					left: 4vw;
+					right: 14vw;
+					transform: none;
+					gap: 2vw;
+					width: auto;
+				}
+
+				.portfolio-modal-close-button, .aboutme-modal-close-button {
+					top: 3.5vh;
+					right: 4vw;
+					width: clamp(30px, 8vw, 42px);
+					height: clamp(30px, 8vw, 42px);
+				}
+
+				.social-media-modal-close-button {
+					top: 3.5vh;
+					right: 4vw;
+					width: clamp(30px, 8vw, 42px);
+					height: clamp(30px, 8vw, 42px);
+				}
+
+				.portfolio-modal-close-button img, .aboutme-modal-close-button img, .social-media-modal-close-button img {
+					width: 100%;
+				}
+
+				.drawing-gallery-container,
+				.animations-gallery-container,
+				.music-gallery-container {
+					width: 88vw;
+					height: 76vh;
+					top: 24vh;
+					left: 6vw;
+					grid-gap: 10px;
+					border-radius: 6px;
+				}
+
+				.drawing-gallery-container {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+
+				.animations-gallery-container, .music-gallery-container {
+					grid-template-columns: 1fr;
+					row-gap: 16px;
+				}
+
+				.animations-gallery-item iframe, .music-gallery-item iframe {
+					width: 100%;
+					height: auto;
+					aspect-ratio: 16 / 9;
+				}
+
+				.illustration-lightbox {
+					padding: 10vh 12vw;
+				}
+
+				.illustration-lightbox-image {
+					max-width: 76vw;
+					max-height: 76vh;
+				}
+
+				.illustration-lightbox-close,
+				.illustration-lightbox-arrow {
+					font-size: 1.5rem;
+					padding: 0.55rem 0.7rem;
+				}
+
+				.illustration-lightbox-previous {
+					left: 2vw;
+				}
+
+				.illustration-lightbox-next {
+					right: 2vw;
+				}
+
+				.aboutme-modal {
+					position: absolute;
+					top: 10%;
+					left: 10%;
+					width: 80%;
+					height: 80%;
+					padding: 5% 8%;
+					box-sizing: border-box;
+					overflow-y: auto;
+					overflow-x: hidden;
+					z-index: 11;
+					scrollbar-width: thin;
+				}
+
+				.aboutme-modal::-webkit-scrollbar {
+					width: 8px;
+				}
+
+				.aboutme-modal::-webkit-scrollbar-thumb {
+					background: rgba(255, 255, 255, 0.8);
+					border-radius: 999px;
+				}
+
+				.aboutme-modal-icon {
+					position: static;
+					width: min(200px, 45%);
+					margin: 0 auto 28px;
+				}
+
+				.aboutme-modal-text,
+				.aboutme-modal-text2,
+				.aboutme-modal-text3 {
+					position: static;
+					transform: none;
+					top: auto;
+					left: auto;
+					width: 100%;
+					height: auto;
+					margin: 0 0 28px;
+				}
+
+				.aboutme-modal-text3 {
+					overflow: visible;
+				}
+
+				.middlebar {
+					display: none;
+				}
+
+				.social-media-buttons {
+					grid-template-columns: repeat(2, minmax(100px, 1fr));
+					gap: 100px 70px;
+					width: 78vw;
+				}
+
+				.social-media-modal-plate {
+					width: 88%;
+					height: 68%;
+					border-radius: 28px;
+				}
+
+				.social-media-button {
+					gap: 8px;
+					font-size: clamp(0.8rem, 3.6vw, 1rem);
+				}
+
+				.social-media-buttons img {
+					width: 70%;
+					height: auto;
+
+				}
+
+				.mute-button {
+					top: 1vh;
+					left: 3vw;
+					padding: 0.5rem 0.75rem;
+					font-size: 0.75rem;
+					scale: 0.8;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main class="stage">
+			<img class="stars bg" src="starry-bg.png" alt="starry background" />
+			<img class="checkered-bg" src="checker.jpg" alt="Checkered background" />
+			<img class="static-black-lines" src="black-lines.png" alt="Static black lines" />
+			<div class="png-border-mobile"></div>
+			<div class="png-border-mobile2"></div>
+			<div class="png-border">
+				<img class="hue-shift-image1" src="top bar.png" alt="Animated PNG" />
+			</div>
+			<div class="png-border2">
+				<img class="hue-shift-image2" src="bottom bar.png" alt="Another Animated PNG" />
+			</div>
+
+			<div class="aboutme-modal-container">
+				<div class="aboutme-modal">
+					<div class="aboutme-modal-icon">
+						<img src="illustrations/portfolio_17.png" alt="About Me icon" />
+					</div>
+					<div class="middlebar"></div>
+					<div class="aboutme-modal-text">
+						<h2>Deveyn Baptiste</h2>
+						<p>Self-taught Artist and Animator</p>
+						<p>Education: Bachelor of Arts in Multimedia Studies</p>
+						<p>Florida Atlantic University (In Progress)</p>
+						<br />
+						<br />
+						<p> Umm...</p>
+						<p>I like One Piece, Sonic, and Kingdom Hearts (obviously)</p>
+						<p>Toby Fox my GOAT fr</p>
+					</div>
+					<div class="aboutme-modal-text2">
+						<p>Contact: daynazeofficial@gmail.com</p>
+					</div>
+					<div class="aboutme-modal-text3">
+						<p>Hello! My name is Deveyn Baptiste, and I`m a Florida-based multidisciplinary artist specializing in Illustration (12 years), Animation (7 years), and Music Composition (5 years).</p>
+						<p>I`m a creator who`s always learning new skills and exploring new ways to express my creativity. I love the process of bringing an idea to life, often becoming so immersed in a project that it`s all I can think about! My interests extend beyond my main specialties to include Video Filming, Editing, Coding, Game Development, Photography, and Writing.
+						</p>
+						<p>I especially love animating to music and songs that I can feel the passion from or resonate with, allowing my imagination to run wild and inspiring me to bring the music to life through my art!</p>
+						<p>If you`re interested in working with me or commissioning me for a project, feel free to check out my <a href="https://vgen.co/DeveynB" target="_blank">VGen</a>! For serious inquiries, collaborations, or any questions, you can also reach me through my email. I look forward to creating with you!</p>
+					</div>
+				</div>
+				<button class="aboutme-modal-close-button" type="button">
+					<img src="close-icon.png" alt="Close icon" />
+				</button>
+				<div class="aboutme-modal-plate"></div>
+			</div>
+
+			<div class="social-media-modal-container">
+				<div class="social-media-modal-plate"></div>
+				<div class="social-media-buttons" aria-label="Social media links">
+					<a class="social-media-button" href="https://www.instagram.com/drdaynaze/" target="_blank" rel="noopener noreferrer">
+
+						<img src="socialmedia/Layer 3.png" alt="Instagram icon" />
+						<span>Instagram</span>
+					</a>
+					<a class="social-media-button" href="https://www.tiktok.com/@drdaynaze" target="_blank" rel="noopener noreferrer">
+
+						<img src="socialmedia/Layer 4.png" alt="TikTok icon" />
+						<span>TikTok</span>
+					</a>
+					<a class="social-media-button" href="https://www.youtube.com/@drdaynaze" target="_blank" rel="noopener noreferrer">
+
+						<img src="socialmedia/Layer 5.png" alt="YouTube icon" />
+						<span>YouTube</span>
+					</a>
+					<a class="social-media-button" href="https://open.spotify.com/artist/35yI9PqaxYHv9WdOMZYrr7?si=FBSnfkteRsW-AvccjruwAQ" target="_blank" rel="noopener noreferrer">
+
+						<img src="socialmedia/Layer 6.png" alt="Spotify icon" />
+						<span>Spotify</span>
+					</a>
+				</div>
+				<button class="social-media-modal-close-button" type="button">
+					<img src="close-icon.png" alt="Close social media modal" />
+				</button>
+			</div>
+
+			<div class="portfolio-modal-container">
+				<p class="portfolio-tools-text">What I Use!<br />- Adobe Animate<br />- ToonSquid<br />- Aseprite<br />- Adobe After Effects<br />- Adobe Premiere Pro<br />- Adobe Photoshop<br />- Adobe Lightroom<br />- Clip Studio Paint EX<br />- Procreate<br />- Blender<br />- FL Studio 25<br />- Unity 2D/3D<br />- Visual Studio Code (C#)</p>
+				<p class="portfolio-tools-text-mobile">What I Use! Adobe Animate, ToonSquid, Aseprite, Adobe After Effects, Adobe Premiere Pro, Adobe Photoshop, Adobe Lightroom, Clip Studio Paint EX, Procreate, Blender, FL Studio 25, Unity 2D/3D, Visual Studio Code (C#)</p>
+				<div class="portfolio-category-buttons">
+					<button class="illustrations-button" type="button" >Illustrations</button>
+					<button class="animations-button" type="button" >Animations</button>
+					<button class="music-button" type="button" >Music</button>
+				</div>
+					<div class="drawing-gallery-container">
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_1.png" alt="Illustration 1"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_2.png" alt="Illustration 2"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_3.png" alt="Illustration 3"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_4.png" alt="Illustration 4"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_5.png" alt="Illustration 5"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_6.png" alt="Illustration 6"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_7.png" alt="Illustration 7"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_8.png" alt="Illustration 8"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_9.png" alt="Illustration 9"></a>
+						</div>
+												<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_10.png" alt="Illustration 10"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_11.png" alt="Illustration 11"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_12.png" alt="Illustration 12"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_13.png" alt="Illustration 13"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_14.png" alt="Illustration 14"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_15.png" alt="Illustration 15"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_16.png" alt="Illustration 16"></a>
+						</div>
+						<div class="drawing-gallery-item">
+							<img src="illustrations/portfolio_17.png" alt="Illustration 17"></a>
+						</div>
+					</div>
+
+
+					<div class="animations-gallery-container">
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/9Tb4Jdbkw38?si=7y5Q67xoCUWRUPDW" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/CKQkDLJDNms?si=zNZYvxDhZIKlXuzS" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/13VNOumgfbA?si=cCt8zEtqfbpgdM1b"
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/Ve5EqScT4_U?si=eSbetnIKbamiKWSP" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/5XrpKSrYe-s?si=YeRNTMp5legQcs4W" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="animations-gallery-item">
+							<iframe src="https://www.youtube.com/embed/wzG0nATPA8E?si=7N8qc47i991cNo1e" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+					<div class="music-gallery-container">
+						<div class="music-gallery-item">
+							<iframe src="https://www.youtube.com/embed/V_qVDJXZVhE?si=zu1MjyL2h0sJos7l" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="music-gallery-item">
+							<iframe src="https://www.youtube.com/embed/81zlup_K2zU?si=fBzfTUYjz1SZOoGH" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="music-gallery-item">
+							<iframe src="https://www.youtube.com/embed/I6Iba6AutUw?si=mT9N4ZC3k-hFwbhl" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+						<div class="music-gallery-item">
+							<iframe src="https://www.youtube.com/embed/xn9CvtBcvSA?si=gjediP8G_4dhUb-e" 
+								title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+								encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+								allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+
+				<button class="portfolio-modal-close-button" type="button">
+					<img src="close-icon.png" alt="Close icon" />
+				</button>
+
+			</div>
+
+			<div class="illustration-lightbox" aria-hidden="true">
+				<button class="illustration-lightbox-close" type="button" aria-label="Close illustration viewer">&times;</button>
+				<button class="illustration-lightbox-arrow illustration-lightbox-previous" type="button" aria-label="Previous illustration">&#10094;</button>
+				<img class="illustration-lightbox-image" src="" alt="" />
+				<button class="illustration-lightbox-arrow illustration-lightbox-next" type="button" aria-label="Next illustration">&#10095;</button>
+			</div>
+
+
+
+
+			<img class="vertical-overlay" src="vertical overlay.png" alt="Vertical overlay" />
+			<div class="slot-ui">
+				<div class="slot-background" aria-label="Slot background">
+				</div>
+				<div class="slot-plate" aria-label="Slot plate panel">
+					<img class="slot-plate-image" src="slotholder.png" alt="Slot plate" />
+				<div class="slot-buttons" aria-label="Site navigation slots">
+					<button class="slot-button" type="button" aria-label="About Me">
+						<img src="Slots/aboutme.png" alt="About Me" />
+					</button>
+					<button class="slot-button" type="button" aria-label="Portfolio">
+						<img src="Slots/portfolio.png" alt="Portfolio" />
+					</button>
+					<button class="slot-button" type="button" aria-label="Commissions">
+						<img src="Slots/commissions.png" alt="Commissions" />
+					</button>
+					<button class="slot-button" type="button" aria-label="Socials">
+						<img src="Slots/socials.png" alt="Socials" />
+					</button>
+					<button class="slot-button-mobile" type="button" aria-label="About Me">
+						<img src="Slots/aboutme-mobile.png" alt="About Me" />
+					</button>
+					<button class="slot-button-mobile" type="button" aria-label="Portfolio">
+						<img src="Slots/portfolio-mobile.png" alt="Portfolio" />
+					</button>
+					<button class="slot-button-mobile" type="button" aria-label="Commissions">
+						<img src="Slots/commissions-mobile.png" alt="Commissions" />
+					</button>
+					<button class="slot-button-mobile" type="button" aria-label="Socials">
+						<img src="Slots/socials-mobile.png" alt="Socials" />
+					</button>
+				</div>
+				<img class="scrollbar" src="scrollbar.png" alt="Scrollbar" />
+				</div>
+			</div>
+			<div class="disc-wrap">
+				<p class="disc-now-playing">Playing: "Smooth Groove!"</p>
+				<img class="disc-icon" src="disc.png" alt="Audio disc" />
+			</div>
+
+			<img class="load-icon" src="load-image.png" alt="Loading icon" />
+			<img class="star-icon" src="star-icon.png" alt="Rotating star" />
+			<div class="intro-text-bg">
+				<div class="intro-text" aria-live="polite"></div>
+			</div>
+
+			<div class="intro-text-sub" aria-live="polite">
+				<p>Website design inspired by Kingdom Hearts</p>
+			</div>
+			
+			<audio id="bgAudio" autoplay loop muted preload="auto">
+				<source src="website-song.mp3" type="audio/mp3" />
+			</audio>
+			<button id="muteButton" class="mute-button" type="button">Mute</button>
+			<script>
+				const bgAudio = document.getElementById('bgAudio');
+				const muteButton = document.getElementById('muteButton');
+				const slotButtons = document.querySelectorAll('.slot-button');
+				const mobileSlotButtons = document.querySelectorAll('.slot-button-mobile');
+
+				function addSlotButtonListener(index, listener) {
+					[slotButtons[index], mobileSlotButtons[index]].forEach((button) => {
+						if (button) button.addEventListener('click', listener);
+					});
+				}
+
+				const portfolioModalContainer = document.querySelector('.portfolio-modal-container');
+				const drawingGalleryContainer = document.querySelector('.drawing-gallery-container');
+				const musicGalleryContainer = document.querySelector('.music-gallery-container');
+				const animationsGalleryContainer = document.querySelector('.animations-gallery-container');
+				const illustrationsButton = document.querySelector('.illustrations-button');
+				const animationsButton = document.querySelector('.animations-button');
+				const musicButton = document.querySelector('.music-button');
+				const illustrationImages = document.querySelectorAll('.drawing-gallery-item img');
+				const illustrationLightbox = document.querySelector('.illustration-lightbox');
+				const illustrationLightboxImage = document.querySelector('.illustration-lightbox-image');
+				const illustrationLightboxClose = document.querySelector('.illustration-lightbox-close');
+				const illustrationLightboxPrevious = document.querySelector('.illustration-lightbox-previous');
+				const illustrationLightboxNext = document.querySelector('.illustration-lightbox-next');
+				const aboutmeModalContainer = document.querySelector('.aboutme-modal-container');
+				const socialMediaModalContainer = document.querySelector('.social-media-modal-container');
+
+				let currentIllustrationIndex = 0;
+
+				const portfolioModalCloseButton = document.querySelector('.portfolio-modal-close-button');
+				const aboutmeModalCloseButton = document.querySelector('.aboutme-modal-close-button');
+				const socialMediaModalCloseButton = document.querySelector('.social-media-modal-close-button');
+
+				const discWrap = document.querySelector('.disc-wrap');
+				const discIcon = document.querySelector('.disc-icon');
+				const discNowPlaying = document.querySelector('.disc-now-playing');
+				const categoryButtons = document.querySelectorAll('.illustrations-button, .animations-button, .music-button');
+				let discNowPlayingTimeout;
+
+				function showIllustration(index) {
+					currentIllustrationIndex = (index + illustrationImages.length) % illustrationImages.length;
+					const image = illustrationImages[currentIllustrationIndex];
+					illustrationLightboxImage.src = image.src;
+					illustrationLightboxImage.alt = image.alt;
+				}
+
+				function openIllustrationLightbox(index) {
+					showIllustration(index);
+					illustrationLightbox.classList.add('show');
+					illustrationLightbox.setAttribute('aria-hidden', 'false');
+				}
+
+				function closeIllustrationLightbox() {
+					illustrationLightbox.classList.remove('show');
+					illustrationLightbox.setAttribute('aria-hidden', 'true');
+				}
+
+				illustrationImages.forEach((image, index) => {
+					image.setAttribute('tabindex', '0');
+					image.addEventListener('click', () => openIllustrationLightbox(index));
+					image.addEventListener('keydown', (event) => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							openIllustrationLightbox(index);
+						}
+					});
+				});
+
+				illustrationLightboxClose.addEventListener('click', closeIllustrationLightbox);
+				illustrationLightboxPrevious.addEventListener('click', () => showIllustration(currentIllustrationIndex - 1));
+				illustrationLightboxNext.addEventListener('click', () => showIllustration(currentIllustrationIndex + 1));
+				illustrationLightbox.addEventListener('click', (event) => {
+					if (event.target === illustrationLightbox) closeIllustrationLightbox();
+				});
+
+				document.addEventListener('keydown', (event) => {
+					if (!illustrationLightbox.classList.contains('show')) return;
+					if (event.key === 'Escape') closeIllustrationLightbox();
+					if (event.key === 'ArrowLeft') showIllustration(currentIllustrationIndex - 1);
+					if (event.key === 'ArrowRight') showIllustration(currentIllustrationIndex + 1);
+				});
+
+				categoryButtons.forEach((button) => {
+					button.addEventListener('click', () => {
+						categoryButtons.forEach((categoryButton) => {
+							categoryButton.classList.remove('is-selected');
+						});
+						button.classList.add('is-selected');
+					});
+				});
+
+				function showDiscNowPlaying(autoHideMs) {
+					if (!discNowPlaying) return;
+					clearTimeout(discNowPlayingTimeout);
+					discNowPlaying.classList.add('is-visible');
+					if (typeof autoHideMs === 'number' && autoHideMs > 0) {
+						discNowPlayingTimeout = setTimeout(() => {
+							discNowPlaying.classList.remove('is-visible');
+						}, autoHideMs);
+					}
+				}
+
+				function hideDiscNowPlaying() {
+					if (!discNowPlaying) return;
+					clearTimeout(discNowPlayingTimeout);
+					discNowPlaying.classList.remove('is-visible');
+				}
+
+				function updateDiscState() {
+					if (!discIcon) return;
+					const isMuted = bgAudio.muted || bgAudio.volume === 0;
+					discIcon.classList.toggle('is-paused', isMuted);
+				}
+
+				async function fadeInAudio() {
+					try {
+						bgAudio.volume = 0;
+						await bgAudio.play();
+						bgAudio.muted = false;
+
+						const duration = 2200;
+						const startTime = performance.now();
+
+						function step(now) {
+							const progress = Math.min((now - startTime) / duration, 1);
+							bgAudio.volume = progress * 0.5;
+							if (progress < 1) {
+								requestAnimationFrame(step);
+							}
+						}
+
+						requestAnimationFrame(step);
+					} catch (error) {
+						console.warn('Audio autoplay was blocked until the user interacts with the page.', error);
+					}
+				}
+
+				muteButton.addEventListener('click', () => {
+					if (bgAudio.muted || bgAudio.volume === 0) {
+						bgAudio.muted = false;
+						bgAudio.volume = 0.5;
+						muteButton.textContent = 'Mute';
+					} else {
+						bgAudio.volume = 0;
+						bgAudio.muted = true;
+						muteButton.textContent = 'Unmute';
+					}
+					updateDiscState();
+				});
+
+				addSlotButtonListener(1, () => {
+						portfolioModalContainer.classList.remove('is-closing');
+						portfolioModalContainer.classList.add('show');
+						illustrationsButton.click();
+				});
+
+				addSlotButtonListener(0, () => {
+						aboutmeModalContainer.classList.remove('is-closing');
+						aboutmeModalContainer.classList.add('show');
+				});
+
+				if (portfolioModalCloseButton) {
+					portfolioModalCloseButton.addEventListener('click', () => {
+						portfolioModalContainer.classList.add('is-closing');
+					});
+				}
+
+				if (aboutmeModalCloseButton) {
+					aboutmeModalCloseButton.addEventListener('click', () => {
+						aboutmeModalContainer.classList.add('is-closing');
+					});
+				}
+
+				if (socialMediaModalCloseButton) {
+					socialMediaModalCloseButton.addEventListener('click', () => {
+						socialMediaModalContainer.classList.add('is-closing');
+					});
+				}
+
+				function finishModalClose(event) {
+					if (event.animationName === 'portfolioFadeOut') {
+						event.currentTarget.classList.remove('show', 'is-closing');
+					}
+				}
+
+				portfolioModalContainer.addEventListener('animationend', finishModalClose);
+				aboutmeModalContainer.addEventListener('animationend', finishModalClose);
+				socialMediaModalContainer.addEventListener('animationend', finishModalClose);
+
+				addSlotButtonListener(2, () => {
+						window.open('https://vgen.co/DeveynB', '_blank', 'noopener,noreferrer');
+				});
+
+				addSlotButtonListener(3, () => {
+						socialMediaModalContainer.classList.remove('is-closing');
+						socialMediaModalContainer.classList.add('show');
+				});
+
+				if (illustrationsButton) {
+					illustrationsButton.addEventListener('click', () => {
+						animationsGalleryContainer.classList.remove('show');
+						musicGalleryContainer.classList.remove('show');
+						drawingGalleryContainer.classList.add('show');
+					});
+				}
+
+				if (animationsButton) {
+					animationsButton.addEventListener('click', () => {
+						drawingGalleryContainer.classList.remove('show');
+						musicGalleryContainer.classList.remove('show');
+						animationsGalleryContainer.classList.add('show');
+					});
+				}
+
+				if (musicButton) {
+					musicButton.addEventListener('click', () => {
+						musicGalleryContainer.classList.add('show');
+						drawingGalleryContainer.classList.remove('show');
+						animationsGalleryContainer.classList.remove('show');
+					});
+				}
+
+				bgAudio.addEventListener('volumechange', updateDiscState);
+				updateDiscState();
+
+				if (discWrap && discIcon && discNowPlaying) {
+					discWrap.addEventListener('animationend', (event) => {
+						if (event.animationName === 'introDiscReveal') {
+							showDiscNowPlaying(3000);
+						}
+					});
+
+					discIcon.addEventListener('mouseenter', () => {
+						showDiscNowPlaying();
+					});
+
+					discIcon.addEventListener('mouseleave', () => {
+						hideDiscNowPlaying();
+					});
+				}
+
+			const introText = document.querySelector('.intro-text');
+			const introMessage = "Hey, I'm Deveyn B. !!! Pick a slot for more info on what I do.";
+
+			function typeIntroText() {
+				let index = 0;
+				introText.textContent = '';
+
+				const tick = () => {
+					if (index <= introMessage.length) {
+						introText.textContent = introMessage.slice(0, index);
+						index += 1;
+						setTimeout(tick, 0);
+					}
+				};
+
+				tick();
+			}
+
+			document.body.classList.add('site-intro');
+			setTimeout(typeIntroText, 1000);
+
+			window.addEventListener('DOMContentLoaded', fadeInAudio, { once: true });
+
+			// Prevent fullscreen
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'F11' || (e.ctrlKey && e.key === 'f')) {
+					e.preventDefault();
+				}
+			});
+
+			document.addEventListener('dblclick', (e) => {
+				e.preventDefault();
+			});
+
+			document.requestFullscreen = () => Promise.reject(new Error('Fullscreen disabled'));
+			document.documentElement.requestFullscreen = () => Promise.reject(new Error('Fullscreen disabled'));
+			
+			if (Element.prototype.requestFullscreen) {
+				Element.prototype.requestFullscreen = function() {
+					return Promise.reject(new Error('Fullscreen disabled'));
+				};
+			}
+			</script>
+		</main>
+	</body>
+</html>
